@@ -103,3 +103,186 @@ function courseGoal(subject:string,date:Date,name:string) : Goal
     return goals as Goal;
 }
 */
+/*
+Decorator - Can be called without instantiating the class
+function Log(constructor:Function)  //Decorator
+{
+    console.log('Logging');
+    console.log(constructor);
+}
+@Log    //Decorator call
+class Employee 
+{
+    constructor(public name:string)
+    {
+
+    }
+    disp()
+    {
+        console.log('Hi, '+this.name);
+    }
+}
+
+let emp = new Employee('Daniel');
+emp.disp();
+*/
+/*
+function Log(name:string)  //Decorator factories - move the parameter passing of the constructor inside through an anonymous function to enable passing of other parameters
+{
+    return function (constructor:Function)
+    {
+        console.log(name);
+        console.log(constructor);
+    };
+}
+@Log('Daniel, ')
+class Employee
+{
+    constructor(public greet:string)
+    {
+        console.log(greet);
+    }
+}
+let emp = new Employee('Nice to meet you!');
+*/
+/*
+function Log(element:string)
+{
+    return function (constructor:any)
+    {
+        const element = document.getElementById('elm');
+        let p = new constructor('Daniel');
+        if(element)
+        {
+            element.innerHTML = p.name;
+        }
+    }
+}
+@Log('app')
+class Employee 
+{
+    constructor(public name:string)
+    {
+        
+    }
+}
+*/
+/*
+Different types of decorators
+//Property decorator is used to describe the propery before which it is used
+function Log(target:any,propertyName:string|Symbol)
+{
+    console.log('Property Decorator!');
+    console.log(target,propertyName);
+}
+function Log1(target:any,name:string,property:PropertyDescriptor)
+{
+    console.log('Accessor Decorator!');
+    console.log(target);
+    console.log(name);
+    console.log(property);
+}
+function Log2(target:any,name:string|Symbol,property:PropertyDescriptor)
+{
+    console.log('Method Decorator!');
+    console.log(target);
+    console.log(name);
+    console.log(property);
+}
+function Log3(target:any,name:string,position:number)
+{
+    console.log('Parameter Decorator!');
+    console.log(target);
+    console.log(name);
+    console.log(position);
+}
+class Price
+{
+    @Log
+    private price:number;
+    @Log1 set val(value:number)
+    {
+        if(this.price>0)
+        {
+            this.price=value;
+        }
+        else
+        {
+            throw new Error('Price should be positive');
+        }
+    }
+    constructor(p:number)
+    {
+        this.price=p;
+    }
+    @Log2
+    getPrice(@Log3 tax:number)
+    {
+        return this.price *(1+tax);
+    }
+}
+*/
+/*
+Returning classes with decorators on classes
+function Log(element:string)
+{
+    return function<T extends { new (...args: any[]): {name: string} }>(
+        originalConstructor: T
+      ) {
+        return class extends originalConstructor {
+            constructor(..._: any[]) {
+              super();
+              const element = document.getElementById('elm');
+                if(element)
+                {
+                    element.innerHTML = this.name;
+                }
+            }}
+    }
+}
+@Log('app')
+class Employee 
+{
+    name = 'Dan';
+    constructor()
+    {
+        
+    }
+}
+let emp = new Employee();
+*/
+/*
+Using an AutoBind decorator to bind this to the object in event listener
+function AutoBind(_:any,_1:string,desc:PropertyDescriptor)
+{
+    let original_method = desc.value;
+    const another_desc :PropertyDescriptor = {
+        configurable:true,
+        enumerable:false,
+        get()
+        {
+            const bndFn = original_method.bind(this);
+            return bndFn;
+        }
+    }
+    return another_desc;
+}
+class Test
+{
+    constructor(public msg:string)
+    {
+    }
+    @AutoBind
+    disp()
+    {
+        console.log(this.msg);
+    }
+}
+let obj = new Test('This works!');
+// obj.disp();
+// let b1=document.getElementById('b1');
+// b1?.addEventListener('click',obj.disp.bind(obj));
+//To avoid bind use a decorator that reurns a PropertDescriptor
+let b1=document.getElementById('b1');
+b1?.addEventListener('click',obj.disp);
+*/
