@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title #{docTitle}
+        link(rel="stylesheet", href="/css/main.css")
+        block styles
+    body
+        header.main-header
+            nav.main-header_nav
+                ul.main-header_item-list
+                    Li.main-header_item
+                        a(href="/") Shop
+                    li.main-header_item
+                        a(href="/admin/addProduct") Add Product
+        block content 

@@ -198,6 +198,8 @@ app.use((req,res,next) => { //404 Page not found error added at the end
 })
 app.listen(3000);
 */
+
+/*
 const path = require('path');
 const express = require('express');
 const app = express();
@@ -209,6 +211,34 @@ const pageNotFound = require('./routes/page-not-found');
 app.use(bodyParser.urlencoded({extended:false}));   //Parses the request body to extract the body at a later stage and calls next() at the end to allow the router middleware to be executed
 
 app.use('/admin',adminRoutes);   //Filtering paths. In admin.js /admin need not be added to the path again but now in the browser and in the form action the admin directory should be included as localhost 3000 followed by admin followed by addProduct
+app.use(shopRoutes);
+
+app.use(pageNotFound);
+app.listen(3000);
+*/
+
+//Sharing data and requests across Users
+const path = require('path');
+const express = require('express');
+const app = express();
+
+app.set('view engine','ejs');
+app.set('views','views');
+// const expressHbs = require('express-handlebars');   //Since handlebars is not built in
+// app.engine('hbs',expressHbs({layoutsDir:'views/layouts',defaultLayout:'main-layout',extname:'hbs'})); //layoutsDir is by default views/layouts. Use the attribute if you want to change it. hbs is the file extension of all files except the layout whereas extname sets the file extension for the layout as well. The default file extesnion for layouts is handlebar and not hbs. So, we have to include that attribute here
+// app.set('view engine', 'hbs');
+// app.set('views','views');
+
+// app.set('view engine','pug');   //Set the view engine to the pug template built inengine installed
+// app.set('views','views');
+const bodyParser = require('body-parser');
+app.use(express.static(path.join(__dirname,'public'))); //Used to serve static readonly public folders in the browser
+const adminData = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+const pageNotFound = require('./routes/page-not-found');
+app.use(bodyParser.urlencoded({extended:false}));   //Parses the request body to extract the body at a later stage and calls next() at the end to allow the router middleware to be executed
+
+app.use('/admin',adminData.routes);   //Filtering paths. In admin.js /admin need not be added to the path again but now in the browser and in the form action the admin directory should be included as localhost 3000 followed by admin followed by addProduct
 app.use(shopRoutes);
 
 app.use(pageNotFound);
