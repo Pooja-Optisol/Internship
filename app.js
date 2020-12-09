@@ -216,7 +216,7 @@ app.use(shopRoutes);
 app.use(pageNotFound);
 app.listen(3000);
 */
-
+/*
 //Sharing data and requests across Users
 const path = require('path');
 const express = require('express');
@@ -233,12 +233,40 @@ app.set('views','views');
 // app.set('views','views');
 const bodyParser = require('body-parser');
 app.use(express.static(path.join(__dirname,'public'))); //Used to serve static readonly public folders in the browser
-const adminData = require('./routes/admin');
+const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const pageNotFound = require('./routes/page-not-found');
 app.use(bodyParser.urlencoded({extended:false}));   //Parses the request body to extract the body at a later stage and calls next() at the end to allow the router middleware to be executed
 
-app.use('/admin',adminData.routes);   //Filtering paths. In admin.js /admin need not be added to the path again but now in the browser and in the form action the admin directory should be included as localhost 3000 followed by admin followed by addProduct
+app.use('/admin',adminRoutes);   //Filtering paths. In admin.js /admin need not be added to the path again but now in the browser and in the form action the admin directory should be included as localhost 3000 followed by admin followed by addProduct
+app.use(shopRoutes);
+
+app.use(pageNotFound);
+app.listen(3000);
+*/
+
+const path = require('path');
+const express = require('express');
+const app = express();
+
+const db = require('./utils/database');
+db.execute('SELECT * FROM products').then(result => {
+    console.log(result);
+}).catch(error => {
+    console.log(err);
+});
+
+app.set('view engine','ejs');
+app.set('views','views');
+
+const bodyParser = require('body-parser');
+app.use(express.static(path.join(__dirname,'public'))); //Used to serve static readonly public folders in the browser
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+const pageNotFound = require('./routes/page-not-found');
+app.use(bodyParser.urlencoded({extended:false}));   //Parses the request body to extract the body at a later stage and calls next() at the end to allow the router middleware to be executed
+
+app.use('/admin',adminRoutes);   //Filtering paths. In admin.js /admin need not be added to the path again but now in the browser and in the form action the admin directory should be included as localhost 3000 followed by admin followed by addProduct
 app.use(shopRoutes);
 
 app.use(pageNotFound);
