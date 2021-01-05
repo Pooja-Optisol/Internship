@@ -26,6 +26,7 @@ db.sequelize = sequelize;
 db.user = require("./user.js")(sequelize, Sequelize);
 db.role = require("./role.js")(sequelize, Sequelize);
 db.bookdriver = require("./bookdriver.js")(sequelize, Sequelize);
+db.registerdriver = require("./registerdriver.js")(sequelize, Sequelize);
 
 
 db.role.belongsToMany(db.user, {
@@ -40,6 +41,8 @@ db.user.belongsToMany(db.role, {
 });
 
 db.user.hasMany(db.bookdriver);
+db.user.hasMany(db.registerdriver);
+
 
 db.ROLES = ["user", "admin", "driver"];
 
