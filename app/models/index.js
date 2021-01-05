@@ -25,6 +25,8 @@ db.sequelize = sequelize;
 
 db.user = require("./user.js")(sequelize, Sequelize);
 db.role = require("./role.js")(sequelize, Sequelize);
+db.bookdriver = require("./bookdriver.js")(sequelize, Sequelize);
+
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -36,6 +38,8 @@ db.user.belongsToMany(db.role, {
   foreignKey: "userId",
   otherKey: "roleId"
 });
+
+db.user.hasMany(db.bookdriver);
 
 db.ROLES = ["user", "admin", "driver"];
 

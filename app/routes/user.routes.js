@@ -19,7 +19,7 @@ module.exports = function(app) {
   );
 
   app.get(
-    "/api/test/mod",
+    "/api/test/driver",
     [authJwt.verifyToken, authJwt.isDriver],
     controller.driverBoard
   );
