@@ -25,8 +25,8 @@ db.sequelize = sequelize;
 
 db.user = require("./user.js")(sequelize, Sequelize);
 db.role = require("./role.js")(sequelize, Sequelize);
-db.bookdriver = require("./bookdriver.js")(sequelize, Sequelize);
-db.registerdriver = require("./registerdriver.js")(sequelize, Sequelize);
+db.book = require("./book.js")(sequelize, Sequelize);
+db.register = require("./register.js")(sequelize, Sequelize);
 
 
 db.role.belongsToMany(db.user, {
@@ -40,9 +40,28 @@ db.user.belongsToMany(db.role, {
   otherKey: "roleId"
 });
 
-db.user.hasMany(db.bookdriver);
-db.user.hasMany(db.registerdriver);
+db.register.belongsToMany(db.book,{
+  through: "user_drivers",
+  foreignKey: "driverID",
+  otherKey: "userId"
+});
+db.book.belongsToMany(db.register,{
+  through: "user_drivers",
+  foreignKey: "userId",
+  otherKey: "driverID"
+});
 
+db.user.hasOne(db.register,{
+  through: "user_register",
+  foreignKey: "userID",
+  otherKey: "driverId"
+});
+
+db.register.hasOne(db.user,{
+  through: "user_register",
+  foreignKey: "driverId",
+  otherKey: "userID"
+});
 
 db.ROLES = ["user", "admin", "driver"];
 

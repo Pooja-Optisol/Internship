@@ -15,4 +15,9 @@ module.exports = function(app) {
     [authJwt.verifyToken,authJwt.isDriver],
     controller.driverRegister
   );
+  app.post(
+    "/api/notify/driver",
+    [authJwt.verifyToken,authJwt.isDriver],
+    controller.driverNotify
+  );
 }

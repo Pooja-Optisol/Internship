@@ -16,6 +16,12 @@ module.exports = function(app) {
     controller.userBook
   );
 
+  app.post(
+    "/api/confirm/user",
+    authJwt.verifyToken,
+    controller.userConfirm
+  )
+
 //   app.post(
 //     "/api/test/driver",
 //     [authJwt.verifyToken, authJwt.isDriver],
